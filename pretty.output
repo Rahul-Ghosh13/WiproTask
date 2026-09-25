@@ -1,0 +1,32 @@
+Feature: User management API # features/user_management.feature:1
+  As an API automation engineer
+  I want to manage users through the REST API
+  So that user lifecycle behavior is verified end to end
+  @smoke @authentication
+  Scenario: Verify login with valid credentials           # features/user_management.feature:7
+    Given a registered API user                           # features/steps/user_steps.py:30
+    When I verify login with the registered credentials   # features/steps/user_steps.py:54
+    Then the response status should be 200                # features/steps/user_steps.py:71
+    And the API response message should be "User exists!" # features/steps/user_steps.py:76
+    And the client should be authenticated                # features/steps/user_steps.py:66
+
+  @user-management
+  Scenario: Create and retrieve a user                         # features/user_management.feature:15
+    Given a new API user payload                               # features/steps/user_steps.py:25
+    When I create the API user                                 # features/steps/user_steps.py:36
+    Then the response status should be 201                     # features/steps/user_steps.py:71
+    And the API response message should be "User created!"     # features/steps/user_steps.py:76
+    When I retrieve the user by email                          # features/steps/user_steps.py:43
+    Then the response status should be 200                     # features/steps/user_steps.py:71
+    And the returned user email should match the request email # features/steps/user_steps.py:81
+
+  @user-management
+  Scenario: Update and delete a user                          # features/user_management.feature:25
+    Given a registered API user                               # features/steps/user_steps.py:30
+    When I update the API user name to "Updated API User"     # features/steps/user_steps.py:48
+    Then the response status should be 200                    # features/steps/user_steps.py:71
+    And the API response message should be "User updated!"    # features/steps/user_steps.py:76
+    When I delete the API user                                # features/steps/user_steps.py:59
+    Then the response status should be 200                    # features/steps/user_steps.py:71
+    And the API response message should be "Account deleted!" # features/steps/user_steps.py:76
+
